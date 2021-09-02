@@ -1,11 +1,20 @@
-package com.example.anoopm.mqtt.manager
+package com.example.tachyontechnologies.mqtt.manager
 
 import android.content.Context
 import android.util.Log
-import com.example.anoopm.mqtt.protocols.UIUpdaterInterface
+import android.widget.Toast
+import com.example.tachyontechnologies.mqtt.protocols.UIUpdaterInterface
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import java.util.*
+import org.eclipse.paho.client.mqttv3.MqttException
+
+import org.eclipse.paho.client.mqttv3.IMqttToken
+
+import org.eclipse.paho.client.mqttv3.IMqttActionListener
+
+
+
 
 class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Context, val uiUpdater: UIUpdaterInterface?) {
 
@@ -20,7 +29,8 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
                 Log.w("mqtt", s)
                 uiUpdater?.resetUIWithConnection(true)
             }
-            override fun connectionLost(throwable:Throwable) {
+            override fun connectionLost(throwable:Throwable?) {
+                Log.w("Mqtt", "Connection lost with disconnect")
                 uiUpdater?.resetUIWithConnection(false)
             }
             override fun messageArrived(topic:String, mqttMessage: MqttMessage) {
@@ -33,8 +43,8 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     }
     fun connect(){
         val mqttConnectOptions = MqttConnectOptions()
-        mqttConnectOptions.setAutomaticReconnect(true)
-        mqttConnectOptions.setCleanSession(false)
+        mqttConnectOptions.setAutomaticReconnect(false)
+        mqttConnectOptions.setCleanSession(true)
         //mqttConnectOptions.setUserName(this.connectionParams.username)
         //mqttConnectOptions.setPassword(this.connectionParams.password.toCharArray())
         try
@@ -62,35 +72,51 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     }
 
     fun disconnect(){
+        Log.d("Mqtt", "Disconnect call received")
         try {
-            client.disconnect(null,object :IMqttActionListener{
-                /**
-                 * This method is invoked when an action has completed successfully.
-                 * @param asyncActionToken associated with the action that has completed
-                 */
+            client.disconnect(null, object : IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
-                    uiUpdater?.resetUIWithConnection(false)
+                    Log.d("Mqtt", "Disconnected")
                 }
 
-                /**
-                 * This method is invoked when an action fails.
-                 * If a client is disconnected while an action is in progress
-                 * onFailure will be called. For connections
-                 * that use cleanSession set to false, any QoS 1 and 2 messages that
-                 * are in the process of being delivered will be delivered to the requested
-                 * quality of service next time the client connects.
-                 * @param asyncActionToken associated with the action that has failed
-                 */
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-                    uiUpdater?.resetUIWithConnection(false)
+                    Log.d("Mqtt", "Failed to disconnect")
                 }
-
             })
+        } catch (e: MqttException) {
+            e.printStackTrace()
         }
-        catch (ex:MqttException) {
-            System.err.println("Exception disconnect")
-            ex.printStackTrace()
-        }
+//        try {
+//            client.disconnect(null,object :IMqttActionListener{
+//                /**
+//                 * This method is invoked when an action has completed successfully.
+//                 * @param asyncActionToken associated with the action that has completed
+//                 */
+//                override fun onSuccess(asyncActionToken: IMqttToken?) {
+//                    uiUpdater?.updateStatusViewWith("Disconnected")
+////                    uiUpdater?.resetUIWithConnection(false)
+//                }
+//
+//                /**
+//                 * This method is invoked when an action fails.
+//                 * If a client is disconnected while an action is in progress
+//                 * onFailure will be called. For connections
+//                 * that use cleanSession set to false, any QoS 1 and 2 messages that
+//                 * are in the process of being delivered will be delivered to the requested
+//                 * quality of service next time the client connects.
+//                 * @param asyncActionToken associated with the action that has failed
+//                 */
+//                override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+//                    uiUpdater?.updateStatusViewWith("Failed to disconnect")
+////                    uiUpdater?.resetUIWithConnection(true)
+//                }
+//
+//            })
+//        }
+//        catch (ex:MqttException) {
+//            System.err.println("Exception disconnect")
+//            ex.printStackTrace()
+//        }
     }
 
     // Subscribe to topic
@@ -140,8 +166,9 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     fun publish(message:String){
         try
         {
+                var topic = "AppCommand"
                 var msg = "Android says:" + message
-                client.publish(this.connectionParams.topic,msg.toByteArray(),0,false,null,object :IMqttActionListener{
+                client.publish(topic,msg.toByteArray(),0,false,null,object :IMqttActionListener{
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.w("Mqtt", "Publish Success!")
                     uiUpdater?.updateStatusViewWith("Published to Topic")

@@ -1,11 +1,13 @@
-package com.example.anoopm.mqtt
+package com.example.tachyontechnologies.mqtt
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import com.example.anoopm.mqtt.manager.MQTTConnectionParams
-import com.example.anoopm.mqtt.manager.MQTTmanager
-import com.example.anoopm.mqtt.protocols.UIUpdaterInterface
+import android.widget.Toast
+import com.example.tachyontechnologies.mqtt.manager.MQTTConnectionParams
+import com.example.tachyontechnologies.mqtt.manager.MQTTmanager
+import com.example.tachyontechnologies.mqtt.protocols.UIUpdaterInterface
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), UIUpdaterInterface {
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         messageField.isEnabled    = status
         connectBtn.isEnabled      = !status
         sendBtn.isEnabled         = status
+        disconnectBtn.isEnabled   = status
 
         // Update the status label.
         if (status){
@@ -41,6 +44,14 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
             $message
             """
         //var newText = text.toString() + "\n" + message +  "\n"
+        val num: Int? = message.toInt()
+        if (num != null) {
+            when {
+                num == 1 -> messageHistoryView.setText(newText)
+                num > 1 -> messageHistoryView.setText(newText)
+                else    -> Log.w("Mqtt", "Not a number")
+            }
+        }
         messageHistoryView.setText(newText)
         messageHistoryView.setSelection(messageHistoryView.text.length)
     }
@@ -61,16 +72,20 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
             var connectionParams = MQTTConnectionParams("MQTTSample",host,topic,"","")
             mqttManager = MQTTmanager(connectionParams,applicationContext,this)
             mqttManager?.connect()
-        }else{
+        } else {
             updateStatusViewWith("Please enter all valid fields")
         }
 
     }
 
+    fun disconnect(view: View){
+        Log.d("Mqtt", "Trying to disconnect")
+        mqttManager?.disconnect()
+    }
+
+
     fun sendMessage(view: View){
 
         mqttManager?.publish(messageField.text.toString())
-
-        messageField.setText("")
     }
 }

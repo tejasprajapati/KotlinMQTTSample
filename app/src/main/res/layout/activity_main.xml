@@ -1,82 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
     <TextView
-            android:background="#e9ab90"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="TextView"
+            android:id="@+id/statusLabl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/statusLabl" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="272dp"
+            android:background="#e9ab90"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="TextView"
+            android:textColor="#004D40"
+            app:layout_constraintBottom_toTopOf="@+id/disconnectBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            android:gravity="center_vertical|center_horizontal"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
+            android:id="@+id/ipAddressField"
             android:layout_width="353dp"
-            android:layout_height="43dp"
-            android:inputType="textPersonName"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:ems="10"
-            android:id="@+id/ipAddressField" android:layout_marginTop="28dp"
-            app:layout_constraintTop_toBottomOf="@+id/statusLabl" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:hint="Enter broker address" app:layout_constraintHorizontal_bias="0.533"/>
+            android:hint="Enter broker address"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statusLabl" />
+
     <EditText
-            android:layout_width="241dp"
-            android:layout_height="41dp"
-            android:inputType="textPersonName"
-            android:ems="10"
             android:id="@+id/messageField"
-            android:hint="Enter a message"
-            app:layout_constraintStart_toStartOf="@+id/topicField" android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/topicField"/>
-    <EditText
-            android:layout_width="353dp"
-            android:layout_height="41dp"
-            android:inputType="textPersonName"
+            android:layout_width="241dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
+            android:hint="Enter a message"
+            android:inputType="textPersonName"
+            android:text="Roll the Dice"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/topicField"
+            app:layout_constraintTop_toBottomOf="@+id/topicField" />
+
+    <EditText
             android:id="@+id/topicField"
+            android:layout_width="353dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="16dp"
+            android:layout_marginRight="16dp"
+            android:ems="10"
             android:hint="Enter Topic to subscribe or listen"
-            android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/ipAddressField"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/ipAddressField"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintTop_toBottomOf="@+id/ipAddressField" />
+
     <Button
-            android:text="Send"
-            android:background="#c9f788"
+            android:id="@+id/sendBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/sendBtn" app:layout_constraintStart_toEndOf="@+id/messageField"
-            android:layout_marginLeft="20dp" android:layout_marginStart="20dp"
-            app:layout_constraintEnd_toEndOf="@+id/topicField" android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp" android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/topicField" app:layout_constraintHorizontal_bias="0.0"
-            android:onClick="sendMessage"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#c9f788"
+            android:onClick="sendMessage"
+            android:text="Send"
+            app:layout_constraintEnd_toEndOf="@+id/topicField"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/messageField"
+            app:layout_constraintTop_toBottomOf="@+id/topicField" />
+
     <Button
-            android:text="Connect"
-            android:background="#c9fcfe"
+            android:id="@+id/connectBtn"
             android:layout_width="348dp"
-            android:layout_height="43dp"
-            android:id="@+id/connectBtn" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/messageField"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="#c9fcfe"
+            android:onClick="connect"
+            android:text="Connect"
+            app:layout_constraintBottom_toTopOf="@+id/disconnectBtn"
+            app:layout_constraintEnd_toEndOf="@+id/sendBtn"
             app:layout_constraintStart_toStartOf="@+id/messageField"
-            app:layout_constraintEnd_toEndOf="@+id/sendBtn" android:onClick="connect"/>
+            app:layout_constraintTop_toBottomOf="@+id/messageField" />
+
     <EditText
-            android:background="@android:color/transparent"
+            android:id="@+id/messageHistoryView"
             android:layout_width="349dp"
             android:layout_height="173dp"
-            android:inputType="textMultiLine"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/transparent"
             android:ems="10"
-            android:id="@+id/messageHistoryView" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/connectBtn"
-            app:layout_constraintStart_toStartOf="@+id/connectBtn" app:layout_constraintEnd_toEndOf="@+id/connectBtn"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" app:layout_constraintVertical_bias="0.096"/>
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/connectBtn"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/connectBtn"
+            app:layout_constraintTop_toBottomOf="@+id/disconnectBtn"
+            app:layout_constraintVertical_bias="0.42"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+            android:id="@+id/disconnectBtn"
+            android:layout_width="348dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="104dp"
+            android:layout_marginBottom="381dp"
+            android:background="#c9fcfe"
+            android:onClick="disconnect"
+            android:text="Disconnect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/connectBtn"
+            app:layout_constraintStart_toStartOf="@+id/connectBtn"
+            app:layout_constraintTop_toBottomOf="@+id/statusLabl" />
 </android.support.constraint.ConstraintLayout>

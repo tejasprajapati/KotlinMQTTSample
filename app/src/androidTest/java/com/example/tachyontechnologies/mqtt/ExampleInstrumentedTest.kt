@@ -1,4 +1,4 @@
-package com.example.anoopm.mqtt
+package com.example.tachyontechnologies.mqtt
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

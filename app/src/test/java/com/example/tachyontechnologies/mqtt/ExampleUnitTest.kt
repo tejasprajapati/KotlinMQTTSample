@@ -1,4 +1,4 @@
-package com.example.anoopm.mqtt
+package com.example.tachyontechnologies.mqtt
 
 import org.junit.Test
 

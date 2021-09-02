@@ -1,4 +1,4 @@
-package com.example.anoopm.mqtt.protocols
+package com.example.tachyontechnologies.mqtt.protocols
 
 interface UIUpdaterInterface {
 
